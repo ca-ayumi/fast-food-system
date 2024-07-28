@@ -1,0 +1,10 @@
+{
+  "type": "postgres",
+  "host": "kesavan.db.elephantsql.com",
+  "port": 5432,
+  "username": "xwtyntcm",
+  "password": "OeZkbCk6az33Y1nTRbi0cFY3-Gne7_mV",
+  "database": "xwtyntcm",
+  "entities": ["dist/**/*.entity.js"],
+  "synchronize": true
+}
