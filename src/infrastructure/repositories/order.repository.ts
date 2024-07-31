@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from '../../domain/models/order.entity';
-import { OrderRepository, ORDER_REPOSITORY } from '../../application/ports/order.repository.interface';
+import { OrderRepository } from '../../application/ports/order.repository.interface';
 
 @Injectable()
 export class OrderRepositoryImpl implements OrderRepository {
@@ -15,7 +15,7 @@ export class OrderRepositoryImpl implements OrderRepository {
     return await this.orderRepository.save(order);
   }
 
-  async findOne(id: number): Promise<Order> {
+  async findOne(id: string): Promise<Order> {
     return await this.orderRepository.findOne({ where: { id } });
   }
 }

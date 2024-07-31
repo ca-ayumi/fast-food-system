@@ -14,8 +14,8 @@ export class ClientController {
     return await this.clientService.createClient(createClientDto);
   }
 
-  @Get(':cpf')
-  @ApiOperation({ summary: 'Get all clients' })
+  @Get('cpf/:cpf')
+  @ApiOperation({ summary: 'Get clients by cpf' })
   async getClientByCpf(@Param('cpf') cpf: string) {
     return await this.clientService.findClientByCpf(cpf);
   }

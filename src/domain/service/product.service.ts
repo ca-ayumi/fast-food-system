@@ -1,9 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateProductDto } from '../../application/dto/create-product.dto';
-import { UpdateProductDto } from '../../application/dto/update-product.dto';
+import {
+  CreateProductDto,
+  ProductCategory,
+} from '../../application/dto/create-product.dto';
 import { Product } from '../models/product.entity';
+import { UpdateProductDto } from 'src/application/dto/update-product.dto';
+import { validate as isUUID } from 'uuid';
 
 @Injectable()
 export class ProductService {
@@ -13,26 +22,77 @@ export class ProductService {
   ) {}
 
   async createProduct(createProductDto: CreateProductDto): Promise<Product> {
+    const existingProduct = await this.productRepository.findOne({
+      where: { name: createProductDto.name },
+    });
+
+    if (existingProduct) {
+      throw new BadRequestException('Product with this name already exists');
+    }
+
     const product = this.productRepository.create(createProductDto);
     return await this.productRepository.save(product);
   }
 
-  async updateProduct(updateProductDto: UpdateProductDto): Promise<Product> {
-    await this.productRepository.update(updateProductDto.id, updateProductDto);
-    return await this.productRepository.findOne({
-      where: { id: updateProductDto.id },
+  async updateProduct(
+    id: string,
+    updateProductDto: Partial<UpdateProductDto>,
+  ): Promise<string> {
+    if (!isUUID(id)) {
+      throw new NotFoundException('Invalid UUID');
+    }
+
+    const product = await this.productRepository.findOne({ where: { id } });
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    const existingProduct = await this.productRepository.findOne({
+      where: { name: updateProductDto.name },
     });
+
+    if (existingProduct && existingProduct.id !== id) {
+      throw new BadRequestException('Product with this name already exists');
+    }
+
+    await this.productRepository.update(id, updateProductDto as Partial<Product>);
+    return `Product with ID ${id} has been successfully updated.`;
   }
 
-  async deleteProduct(id: number): Promise<void> {
+  async deleteProduct(id: string): Promise<string> {
+    if (!isUUID(id)) {
+      throw new NotFoundException('Invalid UUID');
+    }
+
+    const product = await this.productRepository.findOne({ where: { id } });
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
     await this.productRepository.delete(id);
+    return `Product with ID ${id} has been successfully removed.`;
   }
 
-  async findProductByCategory(category: string): Promise<Product[]> {
-    return await this.productRepository.find({ where: { category } });
+  // async findAllProducts(): Promise<Product[]> {
+  //   return await this.productRepository.find();
+  // }
+
+  async findProductsByCategory(category: ProductCategory): Promise<Product[]> {
+    try {
+      const products = await this.productRepository.find({ where: { category } });
+
+      if (!products || products.length === 0) {
+        throw new NotFoundException(`No products found in category ${category}`);
+      }
+
+      return products;
+    } catch (error) {
+      throw new BadRequestException(`Invalid category: ${category}`);
+    }
   }
 
-  async findProductById(id: number): Promise<Product> {
+
+  async findProductById(id: string): Promise<Product> {
     return await this.productRepository.findOne({ where: { id } });
   }
 }

@@ -1,16 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
 
-@Entity()
+@Entity('client')
 export class Client {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   cpf: string;
 
   @Column()
   email: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  formatCPF() {
+    this.cpf = this.cpf.replace(/\D/g, '');
+  }
 }

@@ -1,9 +1,10 @@
+import { ProductCategory } from 'src/application/dto/create-product.dto';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity('product')
 export class Product {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -14,6 +15,12 @@ export class Product {
   @Column()
   price: number;
 
-  @Column()
-  category: string;
+  @Column({
+    type: 'enum',
+    enum: ProductCategory,
+  })
+  category: ProductCategory;
+
+  @Column({ nullable: true })
+  imageUrl: string;
 }
