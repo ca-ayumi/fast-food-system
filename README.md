@@ -1,6 +1,7 @@
 <h1 align="center">🍔 fast-food-system </h1>
 
-![Diagrama de Componentes.jpg](..%2FDiagrama%20de%20Componentes.jpg)
+![Diagrama de Componentes](https://github.com/user-attachments/assets/4368552e-95b1-43ef-8a23-d238683009b8)
+
 
 ## Descrição
 
