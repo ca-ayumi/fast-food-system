@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "da395ac5-0cd3-49ae-a617-4a554df91881",
+		"name": "FIAP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12761192"
+	},
+	"item": [
+		{
+			"name": "Tech Challenge 1",
+			"item": [
+				{
+					"name": "local",
+					"item": [
+						{
+							"name": "Clients",
+							"item": [
+								{
+									"name": "Create a new client",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Exemplo\",\n    \"email\": \"exemplo@example.com\",\n    \"phone\": \"123-456-7890\",\n    \"cpf\": \"316.726.710-00\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/clients",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"clients"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get client by cpf",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/clients/cpf/31672671000",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"clients",
+												"cpf",
+												"31672671000"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Products",
+							"item": [
+								{
+									"name": "Create a new product",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"X-Burger\",\n  \"description\": \"A delicious beef burger with cheese, lettuce\",\n  \"price\": 45.00,\n  \"category\": \"Lanches\",\n  \"imageUrl\":\"https://br.freepik.com/fotos-gratis/hamburguer-saboroso-isolado-no-fundo-branco-fastfood-de-hamburguer-fresco-com-carne-e-queijo_38117312.htm#query=hamburger&position=0&from_view=keyword&track=ais_hybrid&uuid=eb04e18e-d429-473e-8681-77d6ab6ae7b1\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/products",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"products"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update product by ID",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"X-Burger\",\n  \"description\": \"A delicious beef burger with cheese and lettuce\",\n  \"price\": 45.00,\n  \"category\": \"Lanches\",\n  \"imageUrl\":\"https://br.freepik.com/fotos-gratis/hamburguer-saboroso-isolado-no-fundo-branco-fastfood-de-hamburguer-fresco-com-carne-e-queijo_38117312.htm#query=hamburger&position=0&from_view=keyword&track=ais_hybrid&uuid=eb04e18e-d429-473e-8681-77d6ab6ae7b1\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/products/19aaf26f-e727-47db-af03-87d740d7c60a",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"products",
+												"19aaf26f-e727-47db-af03-87d740d7c60a"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete product by ID",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/products/19aaf26f-e727-47db-af03-87d740d7c60a",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"products",
+												"19aaf26f-e727-47db-af03-87d740d7c60a"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get product by category",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/products/category/Lanches",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"products",
+												"category",
+												"Lanches"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Orders",
+							"item": [
+								{
+									"name": "Create a new Order",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"clientId\": \"e8f410cb-5be7-4d3d-b161-426e58cb8bcd\",\n  \"productIds\": [\"98375106-9b27-435a-99fa-0f339d6c35bb\",\"1935d080-60ba-4752-931d-9d0ea9004b63\"]   \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/orders",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"orders"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get order by ID",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/orders/a5e0038f-d342-4f9b-8303-6e256aed921d",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"orders",
+												"a5e0038f-d342-4f9b-8303-6e256aed921d"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get all order",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/orders",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"orders"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Checkout",
+							"item": [
+								{
+									"name": "Send to queue",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"clientId\": \"e8f410cb-5be7-4d3d-b161-426e58cb8bcd\",\n  \"productIds\": [\"98375106-9b27-435a-99fa-0f339d6c35bb\",\"1935d080-60ba-4752-931d-9d0ea9004b63\"]   \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/checkout/fake",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"checkout",
+												"fake"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get queue",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/checkout/queue",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"checkout",
+												"queue"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

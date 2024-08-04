@@ -1,24 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsString, IsArray, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsUUID, IsArray, IsNotEmpty, IsEnum } from 'class-validator';
 import { Product } from '../../domain/models/product.entity';
-import { Client } from '../../domain/models/client.entity';
 import { Order, OrderStatus } from 'src/domain/models/order.entity';
 
 export class OrderDto {
-  @ApiProperty({ description: 'Order ID' })
+  @ApiProperty({
+    description: 'ID of the order',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   @IsUUID()
   id: string;
 
-  @ApiProperty({ description: 'Client ID' })
+  @ApiProperty({
+    description: 'ID of the client',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   @IsUUID()
   clientId: string;
 
-  @ApiProperty({ description: 'Products in order' })
+  @ApiProperty({ description: 'Products in the order', type: [Product] })
   @IsArray()
   @IsNotEmpty()
   product: Product[];
 
-  @ApiProperty({ description: 'Status of the order' })
+  @ApiProperty({ description: 'Status of the order', enum: OrderStatus, example: 'Received' })
   @IsEnum(OrderStatus)
   status: OrderStatus;
 

@@ -73,10 +73,6 @@ export class ProductService {
     return `Product with ID ${id} has been successfully removed.`;
   }
 
-  // async findAllProducts(): Promise<Product[]> {
-  //   return await this.productRepository.find();
-  // }
-
   async findProductsByCategory(category: ProductCategory): Promise<Product[]> {
     try {
       const products = await this.productRepository.find({ where: { category } });

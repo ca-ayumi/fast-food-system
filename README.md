@@ -18,9 +18,16 @@ $ npm install
 
 ## Setup
 
-Criar o arquivo .env com as credenciais.
+Criar o arquivo .env com as seguintes envs: 
+```
+DB_HOST=kesavan.db.elephantsql.com
+DB_PORT=5432
+DB_USERNAME=xwtyntcm
+DB_PASSWORD=OeZkbCk6az33Y1nTRbi0cFY3-Gne7_mV
+DB_NAME=xwtyntcm
+```
 
-## Rodando a aplicação
+## Rodando a aplicação localmente
 
 ```bash
 # development
@@ -31,17 +38,14 @@ $ npm run start:dev
 
 ```
 
-## 📝 Qualidade
+## Rodando a aplicação com Docker
 
 ```bash
-# unit tests
-$ npm run test
-
-# test coverage
-$ npm run test:cov
+# docker
+$ docker-compose up --build
 ```
 
-## 🛫 Migração
+## 🛫 Migração do DB
 
 ```bash
 # build
@@ -54,7 +58,7 @@ $ npm run typeorm migration:run
 
 ## 🗒️ Documentação
 
-- [Fast Food System DOCS](https://www.notion.so/O-BOTIC-RIO-Test-Case-0cd6be17745d415690775126903508f9?pvs=4)
+- [Fast Food System Colletion Postman](https://www.notion.so/O-BOTIC-RIO-Test-Case-0cd6be17745d415690775126903508f9?pvs=4)
 - [Swagger](http://localhost:3000/api#/)
 
 ## 📌 Tecnologias

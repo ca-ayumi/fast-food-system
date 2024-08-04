@@ -2,12 +2,21 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID, IsArray, IsNotEmpty } from 'class-validator';
 
 export class CreateOrderDto {
-  @ApiProperty({ description: 'Client ID' })
+  @ApiProperty({
+    description: 'ID of the client',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   @IsUUID()
   @IsNotEmpty()
   clientId: string;
 
-  @ApiProperty({ description: 'Product IDs' })
+  @ApiProperty({
+    description: 'IDs of the products',
+    example: [
+      '123e4567-e89b-12d3-a456-426614174000',
+      '123e4567-e89b-12d3-a456-426614174001',
+    ],
+  })
   @IsArray()
   @IsUUID(undefined, { each: true })
   @IsNotEmpty()
