@@ -1,6 +1,6 @@
 <h1 align="center">🍔 fast-food-system </h1>
 
-![Diagrama Componente.drawio.png](Diagrams%2FDiagrama%20Componente.drawio.png)
+![Diagrama de Componentes.jpg](..%2FDiagrama%20de%20Componentes.jpg)
 
 ## Descrição
 
@@ -58,7 +58,7 @@ $ npm run typeorm migration:run
 
 ## 🗒️ Documentação
 
-- [Fast Food System Colletion Postman](https://www.notion.so/O-BOTIC-RIO-Test-Case-0cd6be17745d415690775126903508f9?pvs=4)
+- [Collection Postman](https://github.com/ca-ayumi/fast-food-system/blob/main/FIAP.postman_collection.json)
 - [Swagger](http://localhost:3000/api#/)
 
 ## 📌 Tecnologias
