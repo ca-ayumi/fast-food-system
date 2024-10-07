@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fast-food-app
+  labels:
+    app: fast-food-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fast-food-app
+  template:
+    metadata:
+      labels:
+        app: fast-food-app
+    spec:
+      containers:
+        - name: fast-food-app
+          image: your-docker-repo/fast-food-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: MERCADOPAGO_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mercadopago-secrets
+                  key: access-token
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
