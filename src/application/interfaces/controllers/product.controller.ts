@@ -15,10 +15,10 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/s
 import {
   CreateProductDto,
   ProductCategory,
-} from '../../application/dto/create-product.dto';
-import { UpdateProductDto } from '../../application/dto/update-product.dto';
-import { ProductService } from '../../domain/service/product.service';
-import { Product } from 'src/domain/models/product.entity';
+} from '../../dto/create-product.dto';
+import { UpdateProductDto } from '../../dto/update-product.dto';
+import { ProductService } from '../../../domain/service/product.service';
+import { Product } from 'src/domain/entities/product.entity';
 
 @ApiTags('Products')
 @Controller('products')
