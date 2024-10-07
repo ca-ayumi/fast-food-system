@@ -1,19 +1,29 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Order } from '../entities/order.entity';
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
 import { OrderService } from './order.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PaymentService {
-  private readonly baseUrl: string = 'https://api.mercadopago.com';
-  private readonly accessToken: string =
-    'APP_USR-4485502391533418-100613-4d38eab5caf4361ee25d6b580571b5fb-2023202558';
+  private readonly baseUrl: string;
+  private readonly accessToken: string;
+  private readonly notificationUrl: string;
 
   constructor(
     private readonly httpService: HttpService,
     private readonly orderService: OrderService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.baseUrl = this.configService.get<string>('MERCADOPAGO_BASE_URL');
+    this.accessToken = this.configService.get<string>(
+      'MERCADOPAGO_ACCESS_TOKEN',
+    );
+    this.notificationUrl = this.configService.get<string>(
+      'MERCADOPAGO_NOTIFICATION_URL',
+    );
+  }
 
   async createDynamicQR(
     userId: string,
@@ -26,8 +36,7 @@ export class PaymentService {
       external_reference: order.id,
       title: 'Order Payment',
       description: 'Purchase of products',
-      notification_url:
-        'https://e6d0-2804-14c-75a7-5e88-f801-3b56-bb6c-993a.ngrok-free.app',
+      notification_url: this.notificationUrl,
       total_amount: order.product.reduce(
         (sum, product) => sum + product.price,
         0,
@@ -71,15 +80,14 @@ export class PaymentService {
   async checkPaymentStatus(orderId: string): Promise<any> {
     try {
       const response = await this.httpService
-        .get('https://api.mercadopago.com/merchant_orders/search', {
+        .get(`${this.baseUrl}/merchant_orders/search`, {
           headers: {
-            Authorization: `Bearer APP_USR-4485502391533418-100613-4d38eab5caf4361ee25d6b580571b5fb-2023202558`, // Substitua pelo seu token
+            Authorization: `Bearer ${this.accessToken}`,
           },
         })
         .toPromise();
 
       const merchantOrders = response.data.elements;
-
       const matchingOrder = merchantOrders.find(
         (order) => order.external_reference === orderId,
       );
