@@ -1,18 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ClientController } from './infrastructure/controllers/client.controller';
-import { ProductController } from './infrastructure/controllers/product.controller';
-import { OrderController } from './infrastructure/controllers/order.controller';
+import { ClientController } from './application/interfaces/controllers/client.controller';
+import { ProductController } from './application/interfaces/controllers/product.controller';
+import { OrderController } from './application/interfaces/controllers/order.controller';
 import { ClientService } from './domain/service/client.service';
 import { ProductService } from './domain/service/product.service';
 import { OrderService } from './domain/service/order.service';
-import { CreateOrderUseCase } from './application/use-cases/create-order.use-case';
-import { Client } from './domain/models/client.entity';
-import { Product } from './domain/models/product.entity';
-import { Order } from './domain/models/order.entity';
-import { CheckoutService } from './domain/service/checkout.service';
-import { CheckoutController } from './infrastructure/controllers/checkout.controller';
+import { Client } from './domain/entities/client.entity';
+import { Product } from './domain/entities/product.entity';
+import { Order } from './domain/entities/order.entity';
+import { CheckoutController } from './application/interfaces/controllers/checkout.controller';
+import { HttpModule } from '@nestjs/axios';
+import { PaymentService } from './domain/service/payment.service';
+import { CheckoutUseCase } from './application/use-cases/checkout-use-case';
+import { MercadoPagoWebhookController } from './application/interfaces/controllers/mercadopago-webhook.controller';
 
 @Module({
   imports: [
@@ -38,19 +40,21 @@ import { CheckoutController } from './infrastructure/controllers/checkout.contro
       }),
     }),
     TypeOrmModule.forFeature([Client, Product, Order]),
+    HttpModule,
   ],
   controllers: [
     ClientController,
     ProductController,
     CheckoutController,
     OrderController,
+    MercadoPagoWebhookController,
   ],
   providers: [
     ClientService,
     ProductService,
     OrderService,
-    CreateOrderUseCase,
-    CheckoutService,
+    CheckoutUseCase,
+    PaymentService,
   ],
 })
 export class AppModule {}
