@@ -1,12 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  ManyToMany,
+  JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Client } from './client.entity';
 import { Product } from './product.entity';
 
 export enum OrderStatus {
   RECEIVED = 'Recebido',
-  PREPARING = 'Em preparação',
+  PREPARING = 'Em Preparação',
   READY = 'Pronto',
-  COMPLETED = 'Finalizado',
+  FINALIZED = 'Finalizado',
 }
 
 @Entity('order')
@@ -38,4 +48,13 @@ export class Order {
     default: OrderStatus.RECEIVED,
   })
   status: OrderStatus;
+
+  @Column({ name: 'totalamount' })
+  totalAmount: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
