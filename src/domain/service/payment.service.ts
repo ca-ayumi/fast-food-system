@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { Order } from '../entities/order.entity';
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PaymentService {
+  private readonly logger = new Logger(OrderService.name);
   private readonly baseUrl: string;
   private readonly accessToken: string;
   private readonly notificationUrl: string;
@@ -121,6 +122,54 @@ export class PaymentService {
     } catch (error) {
       console.error('Erro ao consultar o status do pagamento:', error);
       throw new Error('Erro ao consultar o status do pagamento');
+    }
+  }
+
+  async processMerchantOrderNotification(
+    merchantOrderId: string,
+  ): Promise<void> {
+    try {
+      this.logger.debug(
+        `Fetching details for merchant order ID: ${merchantOrderId}`,
+      );
+
+      const response: AxiosResponse = await this.httpService
+        .get(`${this.baseUrl}/merchant_orders/${merchantOrderId}`, {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        })
+        .toPromise();
+
+      const merchantOrder = response.data;
+
+      this.logger.debug('Merchant order details received', merchantOrder);
+
+      const isPaid =
+        merchantOrder.status === 'closed' &&
+        merchantOrder.payments?.some(
+          (payment) => payment.status === 'approved',
+        );
+
+      const orderStatus = isPaid ? 'Finalizado' : 'Recebido';
+
+      await this.orderService.updateOrderStatus(
+        merchantOrder.external_reference,
+        orderStatus,
+      );
+
+      this.logger.debug(
+        `Order ${merchantOrder.external_reference} updated to ${orderStatus}`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to process merchant order notification for ID: ${merchantOrderId}`,
+        error,
+      );
+      throw new HttpException(
+        'Failed to process merchant order notification',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

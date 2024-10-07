@@ -1,20 +1,43 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
-import { Response } from 'express';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+  Logger,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { PaymentService } from '../../../domain/service/payment.service';
 
-@Controller('webhook-pagamentos')
+@ApiTags('MercadoPago Webhook')
+@Controller('mercadopago-webhook')
 export class MercadoPagoWebhookController {
-  @Post()
-  async handlePaymentNotification(@Body() body: any, @Res() res: Response) {
-    console.log('Notificação recebida do Mercado Pago:', body);
+  private readonly logger = new Logger(MercadoPagoWebhookController.name);
 
-    if (body.type === 'payment' && body.data && body.data.id) {
-      const paymentId = body.data.id;
+  constructor(private readonly paymentService: PaymentService) {}
 
-      console.log(`Pagamento recebido com ID: ${paymentId}`);
+  @Post('/merchant-order')
+  @ApiOperation({
+    summary: 'Receive MercadoPago merchant order notifications',
+  })
+  async handleMerchantOrderNotification(@Body() body: any): Promise<void> {
+    this.logger.debug('Received merchant order notification', body);
 
-      return res.status(200).send('OK');
+    try {
+      const { type, data } = body;
+
+      if (type === 'merchant_order' && data.id) {
+        this.logger.debug(`Processing merchant order with ID: ${data.id}`);
+
+        await this.paymentService.processMerchantOrderNotification(data.id);
+      } else {
+      }
+    } catch (error) {
+      this.logger.error('Error processing merchant order notification', error);
+      throw new HttpException(
+        'Failed to process notification',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-
-    return res.status(400).send('Bad Request');
   }
 }
