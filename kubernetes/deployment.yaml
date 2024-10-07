@@ -5,7 +5,7 @@ metadata:
   labels:
     app: fast-food-app
 spec:
-  replicas: 2
+  replicas: 2  # Número inicial de réplicas
   selector:
     matchLabels:
       app: fast-food-app
@@ -15,22 +15,29 @@ spec:
         app: fast-food-app
     spec:
       containers:
-        - name: fast-food-app
-          image: your-docker-repo/fast-food-app:latest
+        - name: fast-food-container
+          image: fast-food-system:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 3000
           env:
-            - name: NODE_ENV
-              value: production
+            - name: USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fast-food-secrets
+                  key: userId
+            - name: EXTERNAL_POS_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fast-food-secrets
+                  key: externalPosId
             - name: MERCADOPAGO_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: mercadopago-secrets
-                  key: access-token
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "256Mi"
-            limits:
-              cpu: "500m"
-              memory: "512Mi"
+                  name: fast-food-secret
+                  key: accessToken
+            - name: NOTIFICATION_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: fast-food-config
+                  key: notificationUrl
