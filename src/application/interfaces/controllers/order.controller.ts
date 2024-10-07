@@ -101,7 +101,7 @@ export class OrderController {
         updateOrderStatusDto.status,
       );
       this.logger.debug(`Order updated: ${JSON.stringify(updatedOrder)}`);
-      return new OrderDto(updatedOrder); // Retorna o pedido atualizado
+      return new OrderDto(updatedOrder);
     } catch (error) {
       this.logger.error(
         `Error updating order ID: ${orderId} - ${error.message}`,
@@ -189,11 +189,9 @@ export class OrderController {
         throw new NotFoundException(`Order with ID ${orderId} not found`);
       }
 
-      // Chama o PaymentService para verificar o status no Mercado Pago
       const paymentStatus =
         await this.paymentService.checkPaymentStatus(orderId);
 
-      // Mapeia o status do pagamento para 'Aprovado' ou 'Pendente'
       const translatedPaymentStatus =
         paymentStatus.status === 'paid' ? 'Aprovado' : 'Pendente';
 

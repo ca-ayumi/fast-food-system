@@ -4,7 +4,6 @@ import { CheckoutDto } from '../../dto/checkout.dto';
 import { CheckoutUseCase } from '../../use-cases/checkout-use-case';
 import { CheckoutResponse } from '../../dto/checkout-response.dto';
 
-
 @ApiTags('Checkout')
 @Controller('checkout')
 export class CheckoutController {
