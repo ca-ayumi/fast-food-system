@@ -14,7 +14,9 @@ export class ClientService {
   async createClient(createClientDto: ClientDto): Promise<Client> {
     const formattedCpf = createClientDto.cpf.replace(/\D/g, '');
 
-    const existingClient = await this.clientRepository.findOne({ where: { cpf: formattedCpf } });
+    const existingClient = await this.clientRepository.findOne({
+      where: { cpf: formattedCpf },
+    });
     if (existingClient) {
       throw new BadRequestException('CPF already registered');
     }
