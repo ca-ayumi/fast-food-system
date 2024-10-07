@@ -10,7 +10,7 @@ import {
   CreateProductDto,
   ProductCategory,
 } from '../../application/dto/create-product.dto';
-import { Product } from '../models/product.entity';
+import { Product } from '../entities/product.entity';
 import { UpdateProductDto } from 'src/application/dto/update-product.dto';
 import { validate as isUUID } from 'uuid';
 

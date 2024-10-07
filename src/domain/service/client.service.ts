@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateClientDto } from '../../application/dto/create-client.dto';
-import { Client } from '../models/client.entity';
+import { ClientDto } from '../../application/dto/client.dto';
+import { Client } from '../entities/client.entity';
 
 @Injectable()
 export class ClientService {
@@ -11,7 +11,7 @@ export class ClientService {
     private readonly clientRepository: Repository<Client>,
   ) {}
 
-  async createClient(createClientDto: CreateClientDto): Promise<Client> {
+  async createClient(createClientDto: ClientDto): Promise<Client> {
     const formattedCpf = createClientDto.cpf.replace(/\D/g, '');
 
     const existingClient = await this.clientRepository.findOne({ where: { cpf: formattedCpf } });
