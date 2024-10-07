@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -55,7 +54,10 @@ export class ProductService {
       throw new BadRequestException('Product with this name already exists');
     }
 
-    await this.productRepository.update(id, updateProductDto as Partial<Product>);
+    await this.productRepository.update(
+      id,
+      updateProductDto as Partial<Product>,
+    );
     return `Product with ID ${id} has been successfully updated.`;
   }
 
@@ -75,20 +77,19 @@ export class ProductService {
 
   async findProductsByCategory(category: ProductCategory): Promise<Product[]> {
     try {
-      const products = await this.productRepository.find({ where: { category } });
+      const products = await this.productRepository.find({
+        where: { category },
+      });
 
       if (!products || products.length === 0) {
-        throw new NotFoundException(`No products found in category ${category}`);
+        throw new NotFoundException(
+          `No products found in category ${category}`,
+        );
       }
 
       return products;
     } catch (error) {
       throw new BadRequestException(`Invalid category: ${category}`);
     }
-  }
-
-
-  async findProductById(id: string): Promise<Product> {
-    return await this.productRepository.findOne({ where: { id } });
   }
 }

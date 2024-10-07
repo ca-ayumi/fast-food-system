@@ -8,7 +8,7 @@ import { OrderService } from './order.service';
 export class PaymentService {
   private readonly baseUrl: string = 'https://api.mercadopago.com';
   private readonly accessToken: string =
-    'APP_USR-4485502391533418-100613-4d38eab5caf4361ee25d6b580571b5fb-2023202558'; // Substitua pelo seu Access Token
+    'APP_USR-4485502391533418-100613-4d38eab5caf4361ee25d6b580571b5fb-2023202558';
 
   constructor(
     private readonly httpService: HttpService,
@@ -57,9 +57,8 @@ export class PaymentService {
         })
         .toPromise();
 
-      // Retornando a URL do QR Code gerado
       if (response.data.qr_data) {
-        return response.data.qr_data; // Retorna o qr_data (string do QR Code)
+        return response.data.qr_data;
       } else {
         throw new Error('QR Code not generated');
       }
@@ -71,7 +70,6 @@ export class PaymentService {
 
   async checkPaymentStatus(orderId: string): Promise<any> {
     try {
-      // 1. Fazer requisição para o Mercado Pago para buscar as merchant orders
       const response = await this.httpService
         .get('https://api.mercadopago.com/merchant_orders/search', {
           headers: {
@@ -82,7 +80,6 @@ export class PaymentService {
 
       const merchantOrders = response.data.elements;
 
-      // 2. Encontrar a merchant order que corresponde ao nosso orderId
       const matchingOrder = merchantOrders.find(
         (order) => order.external_reference === orderId,
       );
@@ -91,24 +88,26 @@ export class PaymentService {
         throw new Error(`Order with ID ${orderId} not found in Mercado Pago`);
       }
 
-      // 3. Verificar o status da merchant order
-      const isPaid = matchingOrder.status === 'closed' &&
-        matchingOrder.payments?.some(payment => payment.status === 'approved');
+      const isPaid =
+        matchingOrder.status === 'closed' &&
+        matchingOrder.payments?.some(
+          (payment) => payment.status === 'approved',
+        );
 
       if (isPaid) {
         return {
           orderId: matchingOrder.external_reference,
-          status: 'paid', // Pagamento aprovado
+          status: 'paid',
         };
       } else if (matchingOrder.status === 'opened') {
         return {
           orderId: matchingOrder.external_reference,
-          status: 'pending', // Pagamento pendente
+          status: 'pending',
         };
       } else {
         return {
           orderId: matchingOrder.external_reference,
-          status: 'unknown', // Status desconhecido
+          status: 'unknown',
         };
       }
     } catch (error) {

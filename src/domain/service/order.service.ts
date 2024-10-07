@@ -13,7 +13,7 @@ import { OrderDto } from '../../application/dto/order.dto';
 
 @Injectable()
 export class OrderService {
-  private readonly logger = new Logger(OrderService.name); // Instância do logger
+  private readonly logger = new Logger(OrderService.name);
 
   constructor(
     @InjectRepository(Order)
@@ -107,7 +107,6 @@ export class OrderService {
       `Starting update for order ID: ${orderId} with status: ${status}`,
     );
 
-    // Busca a ordem pelo ID, incluindo cliente e produtos
     const order = await this.orderRepository.findOne({
       where: { id: orderId },
       relations: ['client', 'product'],
@@ -120,7 +119,6 @@ export class OrderService {
 
     this.logger.debug(`Found order: ${JSON.stringify(order)}`);
 
-    // Verifica se o status é um valor válido do enum
     const validStatuses = Object.values(OrderStatus);
     this.logger.debug(`Valid statuses: ${validStatuses.join(', ')}`);
 
@@ -129,7 +127,6 @@ export class OrderService {
       throw new BadRequestException('Invalid status provided');
     }
 
-    // Atualiza o status do pedido
     order.status = status as OrderStatus;
     this.logger.debug(`Updating order status to: ${status}`);
 
