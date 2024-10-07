@@ -23,7 +23,6 @@ export class CheckoutUseCase {
 
     let order;
     try {
-      // Cria o pedido e inclui o valor total
       order = await this.orderService.createOrder(
         checkoutDto.clientId,
         checkoutDto.productIds,
@@ -39,7 +38,6 @@ export class CheckoutUseCase {
     }
 
     try {
-      // Integração com o Mercado Pago para gerar o QR Code
       this.logger.debug(
         `Generating QR code for order: ${order.id}, userId: ${userId}, externalPosId: ${externalPosId}`,
       );
@@ -52,7 +50,6 @@ export class CheckoutUseCase {
         `QR code generated successfully for order: ${order.id}`,
       );
 
-      // Retornar o QR Code e a identificação do pedido
       return {
         orderId: order.id,
         qrCode: qrCode,
