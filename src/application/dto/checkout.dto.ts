@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsUUID, IsArray } from 'class-validator';
+import { IsNotEmpty, IsUUID, IsArray, IsNumber, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class FakeCheckoutDto {
+export class CheckoutDto {
   @ApiProperty({
     description: 'Client ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
@@ -18,4 +18,13 @@ export class FakeCheckoutDto {
   @IsUUID(undefined, { each: true })
   @IsNotEmpty()
   productIds: string[];
+
+  @ApiProperty({
+    description: 'Total amount of the order',
+    example: 100.5,
+  })
+  @IsNumber()
+  @Min(0)
+  @IsNotEmpty()
+  totalAmount: number;
 }

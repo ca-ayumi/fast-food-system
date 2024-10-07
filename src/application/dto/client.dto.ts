@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsCPF } from '../helpers/cpf-validator';
 
-export class CreateClientDto {
+export class ClientDto {
   @ApiProperty({
     description: 'Name of the client',
     example: 'Maria',
