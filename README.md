@@ -8,8 +8,7 @@ Este projeto é um sistema de gerenciamento de pedidos para um fast-food, desenv
 
 
 ## 🏛️ Arquitetura
-
-![Arquitetura Fase 2.drawio.png](..%2F..%2FTech%20Challenge%202%2FArquitetura%20Fase%202.drawio.png)
+![Arquitetura Fase 2 drawio](https://github.com/user-attachments/assets/a52077b8-b5a0-4020-a4e8-a4a858503566)
 
 ### Desenho da Arquitetura
 A arquitetura do sistema foi desenhada para garantir escalabilidade e alta disponibilidade, utilizando os componentes do Kubernetes para gerenciar a aplicação. Abaixo estão os principais componentes da arquitetura:
@@ -69,7 +68,8 @@ MERCADOPAGO_NOTIFICATION_URL=https://3ec5-2804-1b3-8200-39e0-f4ba-4b43-bd54-d490
 ```
 **Atenção**: A URL configurada no MERCADOPAGO_NOTIFICATION_URL precisa ser exatamente a mesma utilizada nas configurações de Webhooks do painel do Mercado Pago. Isso garante que as notificações de eventos (como criação, fechamento ou expiração de ordens comerciais) sejam corretamente enviadas e processadas pela aplicação. Certifique-se de que a URL esteja acessível externamente e corretamente registrada no painel do Mercado Pago, conforme mostrado na imagem a seguir:
 
-![Captura de Tela 2024-10-08 às 21.48.16.png](..%2F..%2F..%2FCaptura%20de%20Tela%202024-10-08%20%C3%A0s%2021.48.16.png)
+![Captura de Tela 2024-10-08 às 21 48 16](https://github.com/user-attachments/assets/d0dbd5ba-ceea-4465-958b-1064362453b7)
+
 
 ## Rodando a aplicação localmente
 
