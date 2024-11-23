@@ -13,18 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
         with:
           region: us-east-1
 
-      - name: Build Docker image
+      - name: Build, Tag, and Push Docker Image
         run: |
-          docker build -t ${{ secrets.ECR_REGISTRY }}/fast-food-system:latest .
-          docker push ${{ secrets.ECR_REGISTRY }}/fast-food-system:latest
-
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f kubernetes/
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          docker build -t your-app .
+          docker tag your-app:latest 881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
+          docker push 881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
