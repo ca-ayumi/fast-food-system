@@ -106,50 +106,6 @@ O HPA monitora o uso de CPU dos Pods e ajusta o número de réplicas entre 2 e 1
 
 ---
 
-## **Exemplo de SQL para Criação das Tabelas**
-
-```sql
--- Tabela client
-CREATE TABLE client (
-    id UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    cpf CHAR(11) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- Tabela product
-CREATE TABLE product (
-    id UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    category VARCHAR(50) NOT NULL,
-    image_url VARCHAR(255)
-);
-
--- Tabela order
-CREATE TABLE order (
-    id UUID PRIMARY KEY,
-    clientid UUID NOT NULL,
-    status VARCHAR(50) DEFAULT 'Recebido',
-    totalamount DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (clientid) REFERENCES client(id) ON DELETE CASCADE
-);
-
--- Tabela order_products
-CREATE TABLE order_products (
-    order UUID NOT NULL,
-    product UUID NOT NULL,
-    PRIMARY KEY (order, product),
-    FOREIGN KEY (order) REFERENCES order(id) ON DELETE CASCADE,
-    FOREIGN KEY (product) REFERENCES product(id) ON DELETE CASCADE
-);
-```
-
 
 ## 🛜 Instalação
 
