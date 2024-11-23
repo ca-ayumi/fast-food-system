@@ -104,6 +104,7 @@ $ npm run typeorm migration:run
 
 - [Collection Postman](https://github.com/ca-ayumi/fast-food-system/blob/main/FIAP.postman_collection.json)
 - [Swagger](http://localhost:3000/api#/)
+- [Link Youtube](https://youtu.be/Rv1ew_ESg-w)
 
 ## 📌 Tecnologias
 
