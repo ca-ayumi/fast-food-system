@@ -15,8 +15,8 @@ spec:
         app: fast-food-app
     spec:
       containers:
-        - name: fast-food-container
-          image: fast-food-system:latest
+        - name: fast-food-app
+          image: 881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 3000

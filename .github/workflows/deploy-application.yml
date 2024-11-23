@@ -1,11 +1,14 @@
-name: Deploy Application
+name: Deploy Application to Kubernetes
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -13,20 +16,13 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker Image
+      - name: Build Docker image
         run: |
-          docker build -t fast-food-system:latest .
-          docker tag fast-food-system:latest 881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
-
-      - name: Push Docker Image to ECR
-        run: docker push 881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
+          docker build -t ${{ secrets.ECR_REGISTRY }}/fast-food-system:latest .
+          docker push ${{ secrets.ECR_REGISTRY }}/fast-food-system:latest
 
       - name: Deploy to Kubernetes
-        uses: appleboy/ssh-action@v0.1.3
-        with:
-          host: ${{ secrets.K8S_HOST }}
-          username: ${{ secrets.K8S_USER }}
-          key: ${{ secrets.K8S_KEY }}
-          script: |
-            kubectl set image deployment/fast-food-system fast-food-system=881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
-            kubectl rollout status deployment/fast-food-system
+        run: |
+          kubectl apply -f kubernetes/
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
