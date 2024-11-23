@@ -36,6 +36,75 @@ Lógica do Auto-scaling
 O HPA monitora o uso de CPU dos Pods e ajusta o número de réplicas entre 2 e 10 conforme a demanda, garantindo que a aplicação mantenha a performance adequada mesmo em picos de tráfego.
 
 
+## 🎲 Estrutura do Banco de Dados
+![img.png](img.png)
+
+### **Tabela: `client`**
+- **Descrição:** Armazena informações dos clientes.
+- **Colunas:**
+  - `id` (UUID): Identificador único do cliente (chave primária).
+  - `name` (VARCHAR): Nome completo do cliente.
+  - `cpf` (CHAR[11]): Cadastro de Pessoa Física (CPF), único e formatado sem caracteres especiais.
+  - `email` (VARCHAR): Endereço de e-mail único.
+- **Regras:**
+  - O campo `cpf` é formatado automaticamente para remover caracteres não numéricos.
+
+---
+
+### **Tabela: `product`**
+- **Descrição:** Contém informações sobre os produtos disponíveis.
+- **Colunas:**
+  - `id` (UUID): Identificador único do produto (chave primária).
+  - `name` (VARCHAR): Nome do produto.
+  - `description` (TEXT): Descrição detalhada do produto.
+  - `price` (DECIMAL): Preço unitário do produto.
+  - `category` (ENUM): Categoria do produto (`Lanches`, `Acompanhamento`, `Bebida` e `Sobremesa`.).
+  - `image_url` (VARCHAR, opcional): URL da imagem do produto.
+
+---
+
+### **Tabela: `order`**
+- **Descrição:** Representa os pedidos realizados pelos clientes.
+- **Colunas:**
+  - `id` (UUID): Identificador único do pedido (chave primária).
+  - `clientid` (UUID): Referência ao cliente que fez o pedido (chave estrangeira).
+  - `status` (ENUM): Status do pedido, com os seguintes valores:
+    - `Recebido`
+    - `Em Preparação`
+    - `Pronto`
+    - `Finalizado`
+  - `totalamount` (DECIMAL): Valor total do pedido.
+  - `created_at` e `updated_at` (TIMESTAMP): Controle de criação e atualização (definidos automaticamente pelo banco).
+- **Relacionamentos:**
+  - Um cliente pode ter vários pedidos (1:N).
+  - Um pedido pode conter vários produtos (N:M).
+
+---
+
+### **Tabela: `order_products`**
+- **Descrição:** Tabela auxiliar para o relacionamento N:M entre `order` e `product`.
+- **Colunas:**
+  - `order` (UUID): Referência ao pedido.
+  - `product` (UUID): Referência ao produto.
+
+---
+
+### **Relacionamentos**
+1. **`client` → `order`:**
+  - Relacionamento 1:N (um cliente pode fazer vários pedidos).
+2. **`order` → `product`:**
+  - Relacionamento N:M através da tabela intermediária `order_products`.
+
+---
+
+#### Detalhes Técnicos
+- **Banco Utilizado:** Amazon RDS (PostgreSQL).
+- **Justificativa:**
+  1. **Gerenciamento Simplificado:** Redução do overhead operacional.
+  2. **Segurança:** Criptografia em trânsito e em repouso.
+  3. **Escalabilidade:** Suporte para cargas crescentes.
+
+---
 
 
 ## 🛜 Instalação
