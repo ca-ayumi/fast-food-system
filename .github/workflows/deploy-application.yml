@@ -13,7 +13,7 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker Image
+      - name: Build Docker Image.
         run: |
           docker build -t fast-food-system:latest .
           docker tag fast-food-system:latest 881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
