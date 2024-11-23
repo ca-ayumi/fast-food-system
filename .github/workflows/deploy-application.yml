@@ -25,7 +25,7 @@ jobs:
         with:
           region: us-east-1
 
-      - name: Build, Tag, and Push Docker Image
+      - name: Build, Tag, and Push Docker Image.
         run: |
           docker build -t your-app .
           docker tag your-app:latest 881490125586.dkr.ecr.us-east-1.amazonaws.com/fast-food-system:latest
