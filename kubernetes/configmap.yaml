@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: fast-food-config
-data:
-  notificationUrl: "https://c06e-2804-1b3-8200-39e0-f4ba-4b43-bd54-d490.ngrok-free.app/mercadopago-webhook/merchant-order"

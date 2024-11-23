@@ -1,0 +1,28 @@
+name: Apply Kubernetes Infra
+on:
+  push:
+    branches:
+      - main
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.6
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Validate Terraform
+        run: terraform validate
+
+      - name: Plan Terraform
+        run: terraform plan
+
+      - name: Apply Terraform
+        run: terraform apply -auto-approve

@@ -33,7 +33,7 @@ import { MercadoPagoWebhookController } from './application/interfaces/controlle
         database: configService.get<string>('DB_NAME'),
         entities: [Client, Product, Order],
         synchronize: false,
-        migrations: ['dist/migration/*.js'],
+        migrations: ['src/migration/*.ts'],
         cli: {
           migrationsDir: 'src/migration',
         },

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fast-food-app
+  labels:
+    app: fast-food-app
+spec:
+  replicas: 2  # Número inicial de réplicas
+  selector:
+    matchLabels:
+      app: fast-food-app
+  template:
+    metadata:
+      labels:
+        app: fast-food-app
+    spec:
+      containers:
+        - name: fast-food-container
+          image: fast-food-system:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          env:
+            - name: USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fast-food-secrets
+                  key: userId
+            - name: EXTERNAL_POS_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fast-food-secrets
+                  key: externalPosId
+            - name: MERCADOPAGO_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: fast-food-secret
+                  key: accessToken
+            - name: NOTIFICATION_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: fast-food-config
+                  key: notificationUrl
